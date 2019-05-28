@@ -1,4 +1,5 @@
-from app import db
+from app import db, pwd_context
+from app.associations import participation
 
 class User(db.Model):
 
@@ -9,7 +10,7 @@ class User(db.Model):
 	email = db.Column(db.String(128), unique=True, nullable=False)
 	password_hash = db.Column(db.String(128), nullable=False)
 
-	activities = db.relationship("Activity", secondary="participation")
+	activities = db.relationship("Activity", secondary=participation)
 	# achievements = db.relationship("Achievement", secondary="achievement_link")
 
 	@property

@@ -2,22 +2,15 @@ from app import db
 from typing import List
 from .model import User
 from .interface import UserInterface
-from passlib.context import CryptContext
 
 class UserService():
-
-    pwd_context = CryptContext(
-        schemes=["pbkdf2_sha256"],
-        default="pbkdf2_sha256",
-        pbkdf2_sha256__default_rounds=30000
-    )
 
     @staticmethod
     def get_all() -> List[User]:
         return User.query.all()
 
     @staticmethod
-    def get_by_id(id: str) -> User:
+    def get_by_id(id: int) -> User:
         return User.query.get(id)
 
     @staticmethod
@@ -27,7 +20,7 @@ class UserService():
         return user
 
     @staticmethod
-    def delete_by_id(id: str) -> List[str]:
+    def delete_by_id(id: int) -> List[int]:
         user = User.query.filter(User.id == id).first()
         if not user:
             return []

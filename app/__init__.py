@@ -21,7 +21,7 @@ def create_app(env=None):
 
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_by_name[env or 'test'])
-    api = Api(app, title='SportsMatch API', version='0.1.0')
+    api = Api(app, title='SportBud API', version='0.1.0')
 
     register_routes(api, app)
     db.init_app(app)
