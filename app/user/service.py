@@ -3,15 +3,18 @@ from typing import List
 from .model import User
 from .interface import UserInterface
 
-class UserService():
+from uuid import UUID, uuid4
+
+
+class UserService:
 
     @staticmethod
     def get_all() -> List[User]:
         return User.query.all()
 
     @staticmethod
-    def get_by_id(id: int) -> User:
-        return User.query.get(id)
+    def get_by_uuid(activity_uuid: UUID) -> User:
+        return User.query.get(activity_uuid)
 
     @staticmethod
     def update(user: User, user_change_updates: UserInterface) -> User:
@@ -20,17 +23,18 @@ class UserService():
         return user
 
     @staticmethod
-    def delete_by_id(id: int) -> List[int]:
-        user = User.query.filter(User.id == id).first()
+    def delete_by_uuid(activityUUID: UUID) -> List[UUID]:
+        user = User.query.filter(User.uuid == activityUUID).first()
         if not user:
             return []
         db.session.delete(user)
         db.session.commit()
-        return [id]
+        return [activityUUID]
 
     @staticmethod
     def create(new_attrs: UserInterface) -> User:
         new_user = User(
+            uuid=uuid4(),
             username=new_attrs['username'],
             password=new_attrs['password'],
             email=new_attrs['email']

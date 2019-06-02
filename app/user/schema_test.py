@@ -10,11 +10,11 @@ def schema() -> UserSchema:
     return UserSchema()
 
 
-def test_WidgetSchema_create(schema: UserSchema):
+def test_user_schema_create(schema: UserSchema):
     assert schema
 
 
-def test_WidgetSchema_works(schema: UserSchema):
+def test_user_schema_works(schema: UserSchema):
     params: UserInterface = schema.load({
         'username': 'testuser',
         'password': 'testpassword',
@@ -23,5 +23,5 @@ def test_WidgetSchema_works(schema: UserSchema):
     user = User(**params)
 
     assert user.username == 'testuser'
-    assert user.password == 'testpassword'
+    assert user.verify_password('testpassword')
     assert user.email == 'testemail@gmail.com'

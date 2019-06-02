@@ -1,11 +1,16 @@
 from mypy_extensions import TypedDict
+from datetime import datetime
 import time
 
-class ActivityInterface(TypedDict):
-    '''ActivityInterface: Defines what is required and expected
-        in the creation of an Activity model.'''
+from uuid import UUID
 
+
+class ActivityInterface(TypedDict):
+    """ActivityInterface: Defines what is required and expected
+        in the creation of an Activity model."""
+
+    uuid: UUID
     name: str
     description: str
-    activity_time: float
+    activity_time: datetime
     location: str

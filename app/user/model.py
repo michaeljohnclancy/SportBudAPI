@@ -1,13 +1,19 @@
 from app import db, pwd_context
 from app.associations import participation
+from .interface import UserInterface
+
+from sqlalchemy_utils import UUIDType
+from uuid import uuid4
+
 
 class User(db.Model):
 
 	__tablename__ = 'users'
 
-	id = db.Column(db.Integer(), primary_key=True, index=True)
+	uuid = db.Column(UUIDType, primary_key=True, default=uuid4)
 	username = db.Column(db.String(128), nullable=False, unique=True)
 	email = db.Column(db.String(128), unique=True, nullable=False)
+
 	password_hash = db.Column(db.String(128), nullable=False)
 
 	activities = db.relationship("Activity", secondary=participation)
@@ -16,7 +22,7 @@ class User(db.Model):
 	@property
 	def password(self):
 		"""
-		Prevent pasword_hash from being accessed
+		Prevent password_hash from being accessed
 		"""
 		raise AttributeError('password is not a readable attribute.')
 
@@ -34,5 +40,10 @@ class User(db.Model):
 		"""
 		return pwd_context.verify(password, self.password_hash)
 
+	def update(self, changes: UserInterface):
+		for key, val in changes.items():
+			setattr(self, key, val)
+		return self
+
 	def __repr__(self):
-		return f'<User: {self.username}>'
+		return f'<User {self.uuid}>'

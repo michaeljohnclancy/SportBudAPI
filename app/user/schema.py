@@ -2,9 +2,11 @@ from marshmallow import fields, Schema
 
 
 class UserSchema(Schema):
-    '''User schema'''
+    """User schema"""
 
-    id = fields.Integer(attribute='user_id')
+    # Read-only for UUID
+    userUUID = fields.UUID(attribute='uuid', dump_only=True)
     username = fields.String(attribute='username')
-    password = fields.String(attribute='password')
+    # Write-only for password
+    password = fields.String(attribute='password', load_only=True)
     email = fields.String(attribute='email')

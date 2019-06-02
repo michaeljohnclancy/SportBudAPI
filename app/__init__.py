@@ -26,8 +26,6 @@ def create_app(env=None):
     register_routes(api, app)
     db.init_app(app)
 
-    migrate = Migrate(app, db, compare_type=True)
-
     @app.route('/health')
     def health():
         return jsonify('healthy')

@@ -14,43 +14,44 @@ api = Namespace('Activity', description='Activity Management Endpoint')
 
 @api.route('/')
 class ActivityResource(Resource):
-    '''Activities'''
+    """Activities"""
 
     @responds(schema=ActivitySchema, many=True)
     def get(self) -> List[Activity]:
-        '''Get all activities'''
+        """Get all activities"""
 
         return ActivityService.get_all()
 
     @accepts(schema=ActivitySchema, api=api)
     @responds(schema=ActivitySchema)
     def post(self) -> Activity:
-        '''Create a Single activity'''
+        """Create a Single activity"""
 
         return ActivityService.create(request.parsed_obj)
 
 
-@api.route('/<int:activityId>')
-@api.param('activityId', 'Activity database ID')
+@api.route('/<string:activityUUID>')
+@api.param('activityUUID', 'Activity database UUID')
 class ActivityIdResource(Resource):
     @responds(schema=ActivitySchema)
-    def get(self, activity_id: int) -> Activity:
-        '''Get Single activity'''
+    def get(self, activityUUID: str) -> Activity:
+        """Get Single activity"""
 
-        return ActivityService.get_by_id(activity_id)
+        return ActivityService.get_by_uuid(activityUUID)
 
-    def delete(self, activity_id: int) -> Response:
-        '''Delete Single activity'''
+    def delete(self, activityUUID: str) -> Response:
+        """Delete Single activity"""
         from flask import jsonify
 
-        id = ActivityService.delete_by_id(activity_id)
-        return jsonify(dict(status='Success', id=id))
+        uuid = ActivityService.delete_by_uuid(activityUUID)
+
+        return jsonify(dict(status='Success', uuid=uuid))
 
     @accepts(schema=ActivitySchema, api=api)
     @responds(schema=ActivitySchema)
-    def put(self, activity_id: int) -> Activity:
-        '''Update Single activity'''
+    def put(self, activityUUID: str) -> Activity:
+        """Update Single activity"""
 
         changes: ActivityInterface = request.parsed_obj
-        activity = ActivityService.get_by_id(activity_id)
+        activity = ActivityService.get_by_uuid(activityUUID)
         return ActivityService.update(activity, changes)

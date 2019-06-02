@@ -1,12 +1,14 @@
 from flask_script import Command
 
 from app import db
-from app.user import User
+from app.activity import Activity
 
+import datetime
+from uuid import uuid4
 
 
 def seed_things():
-    classes = [User]
+    classes = [Activity]
     for klass in classes:
         seed_thing(klass)
 
@@ -14,21 +16,26 @@ def seed_things():
 def seed_thing(cls):
     things = [
         {
-            'username': 'TestUser1',
-            'password': 'TestPassword1',
-            'email': 'TestEmail1@gmail.com'
+            "uuid": uuid4(),
+            "name": "Test",
+            "description": "TestDesc",
+            "activity_time": datetime.datetime(2019, 5, 1),
+            "location": "Edinburgh"
         },
         {
-            'username': 'TestUser2',
-            'password': 'TestPassword2',
-            'email': 'TestEmail2@gmail.com'
+            "uuid": uuid4(),
+            "name": "Test",
+            "description": "TestDesc",
+            "activity_time": datetime.datetime(2019, 5, 1),
+            "location": "Edinburgh"
         },
         {
-            'username': 'TestUser3',
-            'password': 'TestPassword3',
-            'email': 'TestEmail3@gmail.com'
-        },
-    ]
+            "uuid": uuid4(),
+            "name": "Test",
+            "description": "TestDesc",
+            "activity_time": datetime.datetime(2019, 5, 1),
+            "location": "Edinburgh"
+        }]
     db.session.bulk_insert_mappings(cls, things)
 
 class SeedCommand(Command):
