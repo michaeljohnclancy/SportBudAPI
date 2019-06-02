@@ -102,3 +102,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# CUSTOM
+# Project Settings
+config.py
